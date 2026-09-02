@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>CONVERSIÓN DE GRADOS - PRO</title>
+  <link rel="stylesheet" href="css/main.css" />
+  <link rel="stylesheet" href="css/themes.css" />
+</head>
+<body>
+  <!-- MENÚ PRINCIPAL -->
+  <div id="mainMenu" class="screen">
+    <div class="menu-container">
+      <div class="logo-area">
+        <h1>🌡️ CONVERSIÓN DE GRADOS</h1>
+        <p class="subtitle">Batalla Matemática Profesional</p>
+      </div>
+
+      <div class="menu-buttons">
+        <button class="btn-primary" onclick="openMode('campaign')">🎮 CAMPAÑA</button>
+        <button class="btn-primary" onclick="openMode('arcade')">🏃 ARCADE</button>
+        <button class="btn-primary" onclick="openMode('practice')">📚 PRÁCTICA</button>
+        <button class="btn-secondary" onclick="openMode('leaderboard')">🏆 RANKING</button>
+        <button class="btn-secondary" onclick="openMode('achievements')">⭐ LOGROS</button>
+        <button class="btn-secondary" onclick="openMode('settings')">⚙️ AJUSTES</button>
+      </div>
+
+      <div class="menu-stats">
+        <div class="stat-box">
+          <span class="stat-label">Mejor Puntuación</span>
+          <span class="stat-value" id="bestScore">0</span>
+        </div>
+        <div class="stat-box">
+          <span class="stat-label">Logros</span>
+          <span class="stat-value" id="achievementCount">0</span>
+        </div>
+        <div class="stat-box">
+          <span class="stat-label">Racha Actual</span>
+          <span class="stat-value" id="currentStreak">0</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- PANTALLA DE CAMPAÑA -->
+  <div id="campaignScreen" class="screen hidden">
+    <div class="campaign-header">
+      <h2>MODO CAMPAÑA</h2>
+      <button class="btn-back" onclick="backToMenu()">← MENÚ</button>
+    </div>
+
+    <div class="levels-grid" id="levelsGrid"></div>
+
+    <div class="campaign-footer">
+      <p>Derrota a los dos jefes de cada mapa para avanzar</p>
+    </div>
+  </div>
+
+  <!-- PANTALLA DE ARCADE -->
+  <div id="arcadeScreen" class="screen hidden">
+    <div class="arcade-header">
+      <h2>MODO ARCADE - TIEMPO LIMITADO</h2>
+      <button class="btn-back" onclick="backToMenu()">← MENÚ</button>
+    </div>
+    
+    <div class="arcade-select">
+      <button class="difficulty-btn" onclick="startArcade(90)">
+        <span class="diff-icon">🟢</span> FÁCIL (90s)
+      </button>
+      <button class="difficulty-btn" onclick="startArcade(60)">
+        <span class="diff-icon">🟡</span> NORMAL (60s)
+      </button>
+      <button class="difficulty-btn" onclick="startArcade(45)">
+        <span class="diff-icon">🔴</span> DIFÍCIL (45s)
+      </button>
+      <button class="difficulty-btn" onclick="startArcade(30)">
+        <span class="diff-icon">⚫</span> EXTREMO (30s)
+      </button>
+    </div>
+  </div>
+
+  <!-- PANTALLA DE PRÁCTICA -->
+  <div id="practiceScreen" class="screen hidden">
+    <div class="practice-header">
+      <h2>MODO PRÁCTICA</h2>
+      <button class="btn-back" onclick="backToMenu()">← MENÚ</button>
+    </div>
+    
+    <div class="practice-select">
+      <button class="conversion-type-btn" onclick="startPractice('C-F')">
+        Celsius ↔ Fahrenheit
+      </button>
+      <button class="conversion-type-btn" onclick="startPractice('C-K')">
+        Celsius ↔ Kelvin
+      </button>
+      <button class="conversion-type-btn" onclick="startPractice('F-K')">
+        Fahrenheit ↔ Kelvin
+      </button>
+      <button class="conversion-type-btn" onclick="startPractice('ALL')">
+        Todas las conversiones
+      </button>
+    </div>
+  </div>
+
+  <!-- PANTALLA DE RANKING -->
+  <div id="leaderboardScreen" class="screen hidden">
+    <div class="leaderboard-header">
+      <h2>🏆 RANKING GLOBAL</h2>
+      <button class="btn-back" onclick="backToMenu()">← MENÚ</button>
+    </div>
+    
+    <div class="leaderboard-table">
+      <div class="lb-tabs">
+        <button class="lb-tab active" onclick="showLeaderboard('campaign')">Campaña</button>
+        <button class="lb-tab" onclick="showLeaderboard('arcade')">Arcade</button>
+        <button class="lb-tab" onclick="showLeaderboard('practice')">Práctica</button>
+      </div>
+      <div id="leaderboardList" class="lb-list"></div>
+    </div>
+  </div>
+
+  <!-- PANTALLA DE LOGROS -->
+  <div id="achievementsScreen" class="screen hidden">
+    <div class="achievements-header">
+      <h2>⭐ LOGROS DESBLOQUEADOS</h2>
+      <button class="btn-back" onclick="backToMenu()">← MENÚ</button>
+    </div>
+    
+    <div id="achievementsList" class="achievements-grid"></div>
+  </div>
+
+  <!-- PANTALLA DE AJUSTES -->
+  <div id="settingsScreen" class="screen hidden">
+    <div class="settings-header">
+      <h2>⚙️ AJUSTES</h2>
+      <button class="btn-back" onclick="backToMenu()">← MENÚ</button>
+    </div>
+
+    <div class="settings-panel">
+      <div class="setting-group">
+        <label>Tema Visual</label>
+        <select id="themeSelect" onchange="changeTheme(this.value)">
+          <option value="dark">Oscuro</option>
+          <option value="light">Claro</option>
+          <option value="neon">Neón</option>
+          <option value="classic">Clásico</option>
+          <option value="cyberpunk">Cyberpunk</option>
+          <option value="natural">Natural</option>
+          <option value="futuristic">Futurista</option>
+          <option value="retro">Retro</option>
+        </select>
+      </div>
+
+      <div class="setting-group">
+        <label>Sonido</label>
+        <input type="checkbox" id="soundToggle" checked /> Activar sonidos
+      </div>
+
+      <div class="setting-group">
+        <label>Efectos Visuales</label>
+        <input type="checkbox" id="effectsToggle" checked /> Mostrar efectos
+      </div>
+
+      <div class="setting-group">
+        <label>Dificultad Predeterminada</label>
+        <select id="defaultDifficulty">
+          <option value="easy">Fácil</option>
+          <option value="normal" selected>Normal</option>
+          <option value="hard">Difícil</option>
+        </select>
+      </div>
+
+      <button class="btn-danger" onclick="resetProgress()">🔄 RESETEAR PROGRESO</button>
+    </div>
+  </div>
+
+  <!-- PANTALLA DE JUEGO -->
+  <div id="gameScreen" class="screen hidden">
+    <div class="game-hud">
+      <div class="hud-left">
+        <div class="hud-item">❤️ Vida: <span id="playerLife">5</span>/5</div>
+        <div class="hud-item">⭐ Nivel: <span id="playerLevel">1</span></div>
+        <div class="hud-item">⚡ XP: <span id="playerXP">0</span></div>
+      </div>
+
+      <div class="hud-center">
+        <div class="hud-timer">⏱️ <span id="gameTimer">60</span>s</div>
+        <div class="hud-combo">🔥 <span id="comboCounter">0</span>x</div>
+      </div>
+
+      <div class="hud-right">
+        <div class="hud-item">🎯 Aciertos: <span id="correctCount">0</span></div>
+        <div class="hud-item">❌ Errores: <span id="errorCount">0</span></div>
+        <div class="hud-item">📊 Puntuación: <span id="scoreValue">0</span></div>
+      </div>
+
+      <button class="btn-back-game" onclick="quitGame()">← SALIR</button>
+    </div>
+
+    <div class="game-world">
+      <aside class="formula-hint" aria-label="Fórmula de conversión">
+        <span class="formula-hint-label">FÓRMULA</span>
+        <strong id="formulaHint">Selecciona una pregunta</strong>
+      </aside>
+      <div class="player-side">
+        <div class="player-sprite">🧑‍🔬</div>
+        <div class="player-name">Dr. Kelvin</div>
+      </div>
+
+        <div class="battle-arena world" id="arena">
+        <div class="arena-center">
+          <div id="bossCard" class="boss-card">
+            <div class="boss-sprite" id="bossSprite">🔥</div>
+            <div class="boss-info">
+              <h3 id="bossName">TERMOFUEGO</h3>
+              <div class="boss-stats">
+                <div class="stat-bar">
+                  <div class="bar-label">Vida</div>
+                  <div class="bar-container">
+                    <div class="bar-fill" id="bossHealthBar"></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="effects-area" id="effectsArea"></div>
+    </div>
+
+    <div class="game-mission">
+      <div class="mission-card">
+        <h2 id="questionText">Cargando pregunta...</h2>
+        <div class="answer-section">
+          <input 
+            id="answerInput" 
+            type="number" 
+            placeholder="Ingresa tu respuesta" 
+            inputmode="decimal"
+          />
+          <button class="btn-attack" onclick="submitAnswer()">ATACAR (Enter)</button>
+        </div>
+        
+        <div class="feedback-area">
+          <p id="feedbackMessage" class="feedback-msg"></p>
+          <p id="tipMessage" class="tip-msg"></p>
+        </div>
+
+        <div class="power-ups-bar">
+          <button class="power-up-btn" id="shieldBtn" onclick="usePowerUp('shield')" title="Protege de 1 golpe">🛡️ Escudo</button>
+          <button class="power-up-btn" id="doubleBtn" onclick="usePowerUp('double')" title="Dobla el daño">2️⃣ Doble Daño</button>
+          <button class="power-up-btn" id="timeBtn" onclick="usePowerUp('time')" title="Suma 15 segundos">⏰ +15s</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- PANTALLA DE VICTORIA -->
+  <div id="victoryScreen" class="screen hidden">
+    <div class="victory-modal">
+      <h1>🎊 ¡VICTORIA!</h1>
+      <div class="victory-stats">
+        <div class="stat-line">
+          <span class="label">Puntuación Final:</span>
+          <span class="value" id="victoryScore">0</span>
+        </div>
+        <div class="stat-line">
+          <span class="label">Nivel Alcanzado:</span>
+          <span class="value" id="victoryLevel">0</span>
+        </div>
+        <div class="stat-line">
+          <span class="label">Racha de Aciertos:</span>
+          <span class="value" id="victoryStreak">0</span>
+        </div>
+        <div class="stat-line">
+          <span class="label">Tiempo Jugado:</span>
+          <span class="value" id="victoryTime">0s</span>
+        </div>
+      </div>
+
+      <div class="achievement-popup" id="newAchievementPopup"></div>
+
+      <div class="victory-buttons">
+        <button class="btn-primary" onclick="backToMenu()">MENÚ PRINCIPAL</button>
+        <button class="btn-secondary" onclick="restartGame()">JUGAR DE NUEVO</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- PANTALLA DE GAME OVER -->
+  <div id="gameOverScreen" class="screen hidden">
+    <div class="gameover-modal">
+      <h1>💀 GAME OVER</h1>
+      <div class="gameover-stats">
+        <div class="stat-line">
+          <span class="label">Puntuación Final:</span>
+          <span class="value" id="gameoverScore">0</span>
+        </div>
+        <div class="stat-line">
+          <span class="label">Nivel Alcanzado:</span>
+          <span class="value" id="gameoverLevel">0</span>
+        </div>
+        <div class="stat-line">
+          <span class="label">Razón:</span>
+          <span class="value" id="gameoverReason">Vida agotada</span>
+        </div>
+      </div>
+
+      <div class="gameover-buttons">
+        <button class="btn-primary" onclick="backToMenu()">MENÚ PRINCIPAL</button>
+        <button class="btn-secondary" onclick="restartGame()">REINTENTAR</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="js/storage.js"></script>
+  <script src="js/questions.js"></script>
+  <script src="js/ui.js"></script>
+  <script src="js/game.js"></script>
+  <script src="js/audio.js"></script>
+</body>
+</html>
